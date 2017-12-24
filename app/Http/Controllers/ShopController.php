@@ -35,13 +35,13 @@ class ShopController extends Controller
     }
 
     public function preferred() {
-        $likes = Like::all();
+        $likes = Like::where('user_id',auth()->user()->id)->get();
 
         $shopId = $likes->map(function($value) {
             return $value->shop_id;
         });
 
-        return view('shop.preferred',[
+        return response()->json([
             'shops' => Shop::find($shopId)
         ]);
     }

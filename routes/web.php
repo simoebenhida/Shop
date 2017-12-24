@@ -22,11 +22,17 @@ Route::get('/', function () {
 
 //    return App\Shop::find('5a0c6711fb3aac66aafe26c4')->isLiked();
 //    return App\Shop::all()->toArray();
-    return view('shop.nearby',[
-        'shops' => \App\Shop::all()
-    ]);
+//    foreach(App\Like::all() as $like) {
+//        $like->delete();
+//    }
+//    return App\Like::all();
+    return view('shop.nearby');
 });
-Route::get('/preferred-shops','ShopController@preferred');
+Route::get('/preferred-shops',function() {
+    return view('shop.preferred');
+});
+
+Route::post('/preferred-shops','ShopController@preferred');
 Route::post('/shops','ShopController@index');
 Route::post('/shops/{shop}/like','LikeController@store');
 

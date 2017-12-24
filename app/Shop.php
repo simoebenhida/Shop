@@ -13,7 +13,7 @@ class Shop extends Eloquent
     }
 
     public function isLiked() {
-        return $this->likes()->exists();
+        return $this->likes()->where('user_id',auth()->user()->id)->exists();
     }
 
     public function toArray()

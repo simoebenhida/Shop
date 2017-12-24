@@ -8,10 +8,12 @@ use App\Shop;
 class LikeController extends Controller
 {
     public function store(Request $request,Shop $shop) {
-
-        if(! $shop->likes()->exists())
+        
+        if(! $shop->isLiked())
         {
-            $shop->likes()->create();
+            $shop->likes()->create([
+                'user_id' => auth()->user()->id
+            ]);
         }
 
         return response()->json(['success' => true]);

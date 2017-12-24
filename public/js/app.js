@@ -987,6 +987,7 @@ window.Vue = __webpack_require__(35);
  */
 
 Vue.component('shops', __webpack_require__(38));
+Vue.component('preferred-shops', __webpack_require__(42));
 
 var app = new Vue({
   el: '#app'
@@ -42988,11 +42989,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        likeShop: function likeShop(id) {
+        likeShop: function likeShop(id, index) {
             var self = this;
 
             axios.post('/shops/' + id + '/like').then(function (response) {
-                console.log(response);
+                self.shops[index].like = true;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -43034,7 +43035,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _vm._l(_vm.shops, function(shop) {
+      _vm._l(_vm.shops, function(shop, index) {
         return _c("div", { staticClass: "col-md-3" }, [
           _c("div", { staticClass: "panel panel-default" }, [
             _c("div", { staticClass: "text-center panel-heading" }, [
@@ -43061,7 +43062,7 @@ var render = function() {
                   class: { disabled: shop.like },
                   on: {
                     click: function($event) {
-                      _vm.likeShop(shop._id)
+                      _vm.likeShop(shop._id, index)
                     }
                   }
                 },
@@ -43082,6 +43083,153 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-69e8b3d4", module.exports)
+  }
+}
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(39)
+/* script */
+var __vue_script__ = __webpack_require__(43)
+/* template */
+var __vue_template__ = __webpack_require__(44)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Preferred.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-24cca3da", Component.options)
+  } else {
+    hotAPI.reload("data-v-24cca3da", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            shops: []
+        };
+    },
+    mounted: function mounted() {
+        this.getPreferred();
+    },
+
+    methods: {
+        getPreferred: function getPreferred() {
+            var sorted = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+            var self = this;
+            this.shops = [];
+            axios.post('/preferred-shops', {}).then(function (response) {
+                self.shops = response.data.shops;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row" },
+    _vm._l(_vm.shops, function(shop, index) {
+      return _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "panel panel-default" }, [
+          _c("div", { staticClass: "text-center panel-heading" }, [
+            _c("h2", [_vm._v(_vm._s(shop.name))]),
+            _vm._v(" "),
+            _c("img", { attrs: { src: shop.picture, alt: shop.name } })
+          ]),
+          _vm._v(" "),
+          _vm._m(0, true)
+        ])
+      ])
+    })
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-body flex" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-danger pull-left btn-block",
+          attrs: { href: "#" }
+        },
+        [_vm._v("Remove")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-24cca3da", module.exports)
   }
 }
 

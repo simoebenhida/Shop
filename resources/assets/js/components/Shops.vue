@@ -3,7 +3,7 @@
         <div class="block" style="margin-bottom: 20px;margin-left: 20px;">
             <button @click="getLocation()" class="btn btn-default">Sort By Distance</button>
         </div>
-        <div v-for="shop in shops" class="col-md-3">
+        <div v-for="(shop,index) in shops" class="col-md-3">
             <div class="panel panel-default">
                 <div class="text-center panel-heading">
                      <h2>{{ shop.name }}</h2>
@@ -11,7 +11,7 @@
                 </div>
                  <div class="panel-body flex">
                      <a href="#" class="btn btn-danger pull-left" :class="{'disabled' : !shop.like}">Dislike</a>
-                     <button @click="likeShop(shop._id)" class="btn btn-success pull-right" :class="{'disabled' : shop.like}">Like</button>
+                     <button @click="likeShop(shop._id,index)" class="btn btn-success pull-right" :class="{'disabled' : shop.like}">Like</button>
                  </div>
             </div>
         </div>
@@ -54,12 +54,12 @@
                         console.log(error);
                     });
             },
-            likeShop(id) {
+            likeShop(id,index) {
                 let self = this
 
                 axios.post(`/shops/${id}/like`)
                     .then(function (response) {
-                        console.log(response)
+                        self.shops[index].like = true
                     })
                     .catch(function (error) {
                         console.log(error);
