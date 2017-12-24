@@ -962,8 +962,7 @@ module.exports = Cancel;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(10);
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(10);
 
 
 /***/ }),
@@ -987,7 +986,7 @@ window.Vue = __webpack_require__(35);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(38));
+Vue.component('shops', __webpack_require__(38));
 
 var app = new Vue({
   el: '#app'
@@ -42799,7 +42798,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/ExampleComponent.vue"
+Component.options.__file = "resources/assets/js/components/Shops.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -42808,9 +42807,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7168fb6a", Component.options)
+    hotAPI.createRecord("data-v-69e8b3d4", Component.options)
   } else {
-    hotAPI.reload("data-v-7168fb6a", Component.options)
+    hotAPI.reload("data-v-69e8b3d4", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42951,10 +42950,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            location: '',
+            shops: []
+        };
+    },
     mounted: function mounted() {
-        console.log('Component mounted.');
+        this.getShops();
+    },
+
+    methods: {
+        getLocation: function getLocation() {
+            var self = this;
+            axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCHkSW1vr4MJML1SjrmfPujGXyZxcooQjM').then(function (response) {
+                self.location = response.data.location;
+                self.getShops(true);
+            }).catch(function (error) {});
+        },
+        getShops: function getShops() {
+            var sorted = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+            var self = this;
+            this.shops = [];
+            axios.post('/shops', {
+                location: this.location,
+                sorted: sorted.toString()
+            }).then(function (response) {
+                self.shops = response.data.shops;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        likeShop: function likeShop(id) {
+            var self = this;
+
+            axios.post('/shops/' + id + '/like').then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }
 });
 
@@ -42966,46 +43008,82 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "block",
+          staticStyle: { "margin-bottom": "20px", "margin-left": "20px" }
+        },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default",
+              on: {
+                click: function($event) {
+                  _vm.getLocation()
+                }
+              }
+            },
+            [_vm._v("Sort By Distance")]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.shops, function(shop) {
+        return _c("div", { staticClass: "col-md-3" }, [
           _c("div", { staticClass: "panel panel-default" }, [
-            _c("div", { staticClass: "panel-heading" }, [
-              _vm._v("Example Component")
+            _c("div", { staticClass: "text-center panel-heading" }, [
+              _c("h2", [_vm._v(_vm._s(shop.name))]),
+              _vm._v(" "),
+              _c("img", { attrs: { src: shop.picture, alt: shop.name } })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "panel-body" }, [
-              _vm._v(
-                "\n                    I'm an example component!\n                "
+            _c("div", { staticClass: "panel-body flex" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger pull-left",
+                  class: { disabled: !shop.like },
+                  attrs: { href: "#" }
+                },
+                [_vm._v("Dislike")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success pull-right",
+                  class: { disabled: shop.like },
+                  on: {
+                    click: function($event) {
+                      _vm.likeShop(shop._id)
+                    }
+                  }
+                },
+                [_vm._v("Like")]
               )
             ])
           ])
         ])
-      ])
-    ])
-  }
-]
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7168fb6a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-69e8b3d4", module.exports)
   }
 }
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
