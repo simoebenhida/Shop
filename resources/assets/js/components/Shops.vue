@@ -10,8 +10,8 @@
                      <img :src="shop.picture" :alt="shop.name">
                 </div>
                  <div class="panel-body flex">
-                     <a href="#" class="btn btn-danger pull-left" :class="{'disabled' : !shop.like}">Dislike</a>
-                     <button @click="likeShop(shop._id,index)" class="btn btn-success pull-right" :class="{'disabled' : shop.like}">Like</button>
+                     <button @click="dislikeShop(shop._id,index)" class="btn btn-danger pull-left">Dislike</button>
+                     <button @click="likeShop(shop._id,index)" class="btn btn-success pull-right" >Like</button>
                  </div>
             </div>
         </div>
@@ -59,7 +59,19 @@
 
                 axios.post(`/shops/${id}/like`)
                     .then(function (response) {
-                        self.shops[index].like = true
+                        self.shops.splice(index, 1);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            dislikeShop(id,index) {
+                let self = this
+
+                axios.post(`/shops/${id}/dislike`)
+                    .then(function (response) {
+                        console.log(response)
+                        self.shops.splice(index, 1);
                     })
                     .catch(function (error) {
                         console.log(error);

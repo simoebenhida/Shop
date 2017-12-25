@@ -7,7 +7,7 @@
                     <img :src="shop.picture" :alt="shop.name">
                 </div>
                 <div class="panel-body flex">
-                    <a href="#" class="btn btn-danger pull-left btn-block">Remove</a>
+                    <button @click="removeShop(shop._id,index)" class="btn btn-danger pull-left btn-block">Remove</button>
                 </div>
             </div>
         </div>
@@ -37,6 +37,17 @@
                         console.log(error);
                     });
             },
+            removeShop(id,index) {
+                let self = this
+                axios.post(`/shops/${id}/destroy`,{
+                })
+                    .then(function (response) {
+                        self.shops.splice(index, 1);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         }
     }
 </script>
